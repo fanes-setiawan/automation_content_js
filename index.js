@@ -1,6 +1,5 @@
 const { Hono } = require('hono');
 const { cors } = require('hono/cors');
-require('dotenv').config();
 
 const apiRoutes = require('./routes/api');
 

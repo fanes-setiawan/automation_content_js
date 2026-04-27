@@ -1,7 +1,5 @@
 const axios = require('axios');
-require('dotenv').config();
 
-const API_KEY = process.env.GEMINI_API_KEY;
 // Endpoint dasar Google AI Studio
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
 
@@ -9,10 +7,11 @@ const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
  * Fungsi eksperimental untuk memanggil Veo via AI Studio REST API.
  * Catatan: Endpoint ini mungkin berubah karena fitur masih preview.
  */
-const generateVideoWithVeoStudio = async (prompt) => {
+const generateVideoWithVeoStudio = async (prompt, env = {}) => {
   try {
+    const API_KEY = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
     if (!API_KEY) {
-      throw new Error('GEMINI_API_KEY belum dikonfigurasi di .env');
+      throw new Error('GEMINI_API_KEY belum dikonfigurasi di Environment Variables');
     }
 
     // Nama model video Veo (bisa veo-001, veo-preview, atau disesuaikan dengan dokumentasi Google Anda)

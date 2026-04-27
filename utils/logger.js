@@ -1,10 +1,9 @@
 const axios = require('axios');
-require('dotenv').config();
 
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
-
-const logToDiscord = async (message, type = 'info') => {
+const logToDiscord = async (message, type = 'info', env = {}) => {
   try {
+    const DISCORD_WEBHOOK_URL = env.DISCORD_WEBHOOK_URL || process.env.DISCORD_WEBHOOK_URL;
+    if (!DISCORD_WEBHOOK_URL) return;
     let color = 0x3498db;
     if (type === 'success') color = 0x2ecc71;
     if (type === 'error') color = 0xe74c3c;
