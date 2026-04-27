@@ -10,8 +10,9 @@ app.use('*', cors());
 app.get('/', (c) => {
   return c.json({
     status: 'online',
-    message: 'Backend Automation Content JS is Running!',
+    author: 'fanes setiawan',
     version: '1.0.0',
+    message: 'fanes setiawan : version 1.0.0',
     endpoints: ['/api/workflow/start', '/api/generate/script', '/api/generate/video'],
   });
 });
