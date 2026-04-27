@@ -13,7 +13,7 @@ export const logToDiscord = async (message, type = 'info', env = {}) => {
     const payload = {
       embeds: [
         {
-          title: `n8n Workflow - \${type.toUpperCase()}`,
+          title: `n8n Workflow - ${type.toUpperCase()}`,
           description: message,
           color: color,
           timestamp: new Date(),
