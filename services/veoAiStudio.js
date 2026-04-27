@@ -1,4 +1,4 @@
-const axios = require('axios');
+import axios from 'axios';
 
 // Endpoint dasar Google AI Studio
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
@@ -7,7 +7,7 @@ const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
  * Fungsi eksperimental untuk memanggil Veo via AI Studio REST API.
  * Catatan: Endpoint ini mungkin berubah karena fitur masih preview.
  */
-const generateVideoWithVeoStudio = async (prompt, env = {}) => {
+export const generateVideoWithVeoStudio = async (prompt, env = {}) => {
   try {
     const API_KEY = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
     if (!API_KEY) {
@@ -16,7 +16,7 @@ const generateVideoWithVeoStudio = async (prompt, env = {}) => {
 
     // Nama model video Veo (bisa veo-001, veo-preview, atau disesuaikan dengan dokumentasi Google Anda)
     const model = 'veo-preview';
-    const endpoint = `${BASE_URL}/${model}:predict?key=${API_KEY}`;
+    const endpoint = `\${BASE_URL}/\${model}:predict?key=\${API_KEY}`;
 
     const payload = {
       instances: [
@@ -52,12 +52,10 @@ const generateVideoWithVeoStudio = async (prompt, env = {}) => {
         JSON.stringify(error.response.data, null, 2),
       );
       throw new Error(
-        `API Google menolak request: ${error.response.data.error?.message || error.message}`,
+        \`API Google menolak request: \${error.response.data.error?.message || error.message}\`,
       );
     }
     console.error('Kesalahan Sistem:', error.message);
     throw error;
   }
 };
-
-module.exports = { generateVideoWithVeoStudio };

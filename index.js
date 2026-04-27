@@ -1,7 +1,6 @@
-const { Hono } = require('hono');
-const { cors } = require('hono/cors');
-
-const apiRoutes = require('./routes/api');
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import apiRoutes from './routes/api.js';
 
 const app = new Hono();
 
@@ -10,14 +9,5 @@ app.use('*', cors());
 // Load API routes
 app.route('/api', apiRoutes);
 
-// Export app untuk Cloudflare Workers
-module.exports = {
-  fetch: app.fetch,
-};
-
-// Jika ingin dijalankan secara lokal (bukan Cloudflare):
-// const { serve } = require('@hono/node-server');
-// const PORT = process.env.PORT || 3000;
-// serve({ fetch: app.fetch, port: PORT }, () => {
-//   console.log(\`Server lokal berjalan di http://localhost:\${PORT}\`);
-// });
+// Export default untuk Cloudflare Workers
+export default app;

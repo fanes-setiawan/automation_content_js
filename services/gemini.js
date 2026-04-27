@@ -1,6 +1,6 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const generateContent = async (prompt, env = {}) => {
+export const generateContent = async (prompt, env = {}) => {
   try {
     const API_KEY = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
     if (!API_KEY) {
@@ -16,5 +16,3 @@ const generateContent = async (prompt, env = {}) => {
     throw error;
   }
 };
-
-module.exports = { generateContent };
