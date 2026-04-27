@@ -82,6 +82,24 @@ Aplikasi ini dirancang untuk bekerja dalam alur kerja n8n:
 3. **Action**: n8n memanggil `/api/generate/metadata` dan `/api/generate/thumbnail`.
 4. **Monitoring**: Setiap langkah akan otomatis mengirim notifikasi ke Discord Anda.
 
+## 🧪 Cara Pengujian (cURL)
+
+Anda bisa menguji API ini langsung dari terminal Anda menggunakan perintah cURL berikut:
+
+### 📝 Generate Skrip
+```bash
+curl -X POST https://automation-content-js.fanessetiawan-1401.workers.dev/api/generate/script \
+     -H "Content-Type: application/json" \
+     -d '{"topic": "Cara masak mie instan yang enak", "context": "Gaya bicara chef profesional"}'
+```
+
+### 🏷️ Generate Metadata
+```bash
+curl -X POST https://automation-content-js.fanessetiawan-1401.workers.dev/api/generate/metadata \
+     -H "Content-Type: application/json" \
+     -d '{"topic": "Cara masak mie", "script": "Pertama rebus air..."}'
+```
+
 ---
 
 ## 💻 Pengembangan Lokal
