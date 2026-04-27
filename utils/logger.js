@@ -2,8 +2,12 @@ import axios from 'axios';
 
 export const logToDiscord = async (message, type = 'info', env = {}) => {
   try {
-    const DISCORD_WEBHOOK_URL = env.DISCORD_WEBHOOK_URL || process.env.DISCORD_WEBHOOK_URL;
-    if (!DISCORD_WEBHOOK_URL) return;
+    const DISCORD_WEBHOOK_URL = env?.DISCORD_WEBHOOK_URL || (typeof process !== 'undefined' ? process.env?.DISCORD_WEBHOOK_URL : undefined);
+    
+    if (!DISCORD_WEBHOOK_URL) {
+      console.warn('DISCORD_WEBHOOK_URL tidak ditemukan, melewati pengiriman log.');
+      return;
+    }
 
     let color = 0x3498db;
     if (type === 'success') color = 0x2ecc71;

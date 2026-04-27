@@ -2,7 +2,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const generateContent = async (prompt, env = {}) => {
   try {
-    const API_KEY = env.GEMINI_API_KEY || process.env.GEMINI_API_KEY;
+    // Di Cloudflare Workers, variabel env ada di dalam parameter env.
+    // process.env hanya ada di Node.js lokal.
+    const API_KEY = env?.GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env?.GEMINI_API_KEY : undefined);
+    
     if (!API_KEY) {
       throw new Error('GEMINI_API_KEY belum dikonfigurasi di Environment Variables');
     }
