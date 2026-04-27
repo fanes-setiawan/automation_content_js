@@ -1,0 +1,6 @@
+name = "automation-content-js"
+main = "index.js"
+compatibility_date = "2024-04-27"
+
+# Anda tidak perlu menaruh variabel rahasia di sini.
+# Gunakan dashboard Cloudflare (Settings > Variables) untuk .env rahasia Anda.

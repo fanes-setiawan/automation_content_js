@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const { Hono } = require('hono');
+const router = new Hono();
 const contentController = require('../controllers/contentController');
 
 router.post('/workflow/start', contentController.startWorkflow);

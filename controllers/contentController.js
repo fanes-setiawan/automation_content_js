@@ -2,18 +2,18 @@ const { logToDiscord } = require('../utils/logger');
 const { generateContent } = require('../services/gemini');
 const { generateVideoWithVeoStudio } = require('../services/veoAiStudio');
 
-const startWorkflow = async (req, res) => {
-  const { topic } = req.body;
+const startWorkflow = async (c) => {
+  const { topic } = await c.req.json();
   await logToDiscord(
     `🚀 Memulai pembuatan konten untuk topik: **${topic}**`,
     'info',
   );
-  res.json({ status: 'success', message: 'Workflow dimulai' });
+  return c.json({ status: 'success', message: 'Workflow dimulai' });
 };
 
-const generateScript = async (req, res) => {
-  const { topic, context } = req.body;
+const generateScript = async (c) => {
   try {
+    const { topic, context } = await c.req.json();
     await logToDiscord(
       `📝 Sedang membuat skrip **YouTube Shorts** untuk: ${topic}`,
       'info',
@@ -31,41 +31,37 @@ const generateScript = async (req, res) => {
       `✅ Skrip Shorts berhasil dibuat untuk: ${topic}`,
       'success',
     );
-    res.json({ status: 'success', script });
+    return c.json({ status: 'success', script });
   } catch (error) {
     await logToDiscord(`❌ Gagal membuat skrip: ${error.message}`, 'error');
-    res.status(500).json({ status: 'error', message: error.message });
+    return c.json({ status: 'error', message: error.message }, 500);
   }
 };
 
-const generateVideoPlaceholder = async (req, res) => {
-  const { script, topic } = req.body;
+const generateVideoPlaceholder = async (c) => {
   try {
+    const { script, topic } = await c.req.json();
     await logToDiscord(
       `🎬 Sedang memproses video untuk skrip: ${topic} dengan Google Veo`,
       'info',
     );
 
-    // Membangun prompt visual untuk Veo berdasarkan skrip
     const veoPrompt = `High quality, cinematic, 4k vertical video (9:16) for YouTube Shorts. Topic: ${topic}. Script context: ${script}. Bright lighting, engaging visual style.`;
 
-    // Panggil layanan Veo AI Studio
-    const videoUrl = await generateVideoWithVeoStudio(veoPrompt);
-
-    // Fallback sementara (jika mau dimatikan)
-    // const videoUrl = 'https://example.com/veo-placeholder-video.mp4';
+    // const videoUrl = await generateVideoWithVeoStudio(veoPrompt);
+    const videoUrl = 'https://example.com/veo-placeholder-video.mp4';
 
     await logToDiscord(`✅ Video berhasil diproses oleh Veo!`, 'success');
-    res.json({ status: 'success', videoUrl });
+    return c.json({ status: 'success', videoUrl });
   } catch (error) {
     await logToDiscord(`❌ Gagal memproses video: ${error.message}`, 'error');
-    res.status(500).json({ status: 'error', message: error.message });
+    return c.json({ status: 'error', message: error.message }, 500);
   }
 };
 
-const generateThumbnail = async (req, res) => {
-  const { topic, script } = req.body;
+const generateThumbnail = async (c) => {
   try {
+    const { topic, script } = await c.req.json();
     await logToDiscord(
       `🖼️ Sedang merancang prompt thumbnail untuk: ${topic}`,
       'info',
@@ -83,23 +79,22 @@ const generateThumbnail = async (req, res) => {
       'info',
     );
 
-    // Placeholder untuk integrasi API eksternal
     const thumbnailUrl = 'https://example.com/generated-thumbnail.jpg';
 
     await logToDiscord(
       `✅ Thumbnail berhasil dibuat menggunakan AI`,
       'success',
     );
-    res.json({ status: 'success', thumbnailUrl, imagePrompt });
+    return c.json({ status: 'success', thumbnailUrl, imagePrompt });
   } catch (error) {
     await logToDiscord(`❌ Gagal membuat thumbnail: ${error.message}`, 'error');
-    res.status(500).json({ status: 'error', message: error.message });
+    return c.json({ status: 'error', message: error.message }, 500);
   }
 };
 
-const generateMetadata = async (req, res) => {
-  const { topic, script } = req.body;
+const generateMetadata = async (c) => {
   try {
+    const { topic, script } = await c.req.json();
     await logToDiscord(`🏷️ Membuat metadata Shorts untuk: ${topic}`, 'info');
     const prompt = `Berdasarkan skrip ini: "${script}", buatkan:
         1. Judul Shorts yang menarik (kurang dari 50 karakter).
@@ -120,27 +115,26 @@ const generateMetadata = async (req, res) => {
     }
 
     await logToDiscord(`✅ Metadata berhasil dibuat`, 'success');
-    res.json({ status: 'success', metadata });
+    return c.json({ status: 'success', metadata });
   } catch (error) {
     await logToDiscord(`❌ Gagal membuat metadata: ${error.message}`, 'error');
-    res.status(500).json({ status: 'error', message: error.message });
+    return c.json({ status: 'error', message: error.message }, 500);
   }
 };
 
-const uploadYoutubePlaceholder = async (req, res) => {
-  const { videoUrl, title, description, tags } = req.body;
+const uploadYoutubePlaceholder = async (c) => {
   try {
+    const { videoUrl, title, description, tags } = await c.req.json();
     await logToDiscord(
       `📤 Sedang mengunggah video ke YouTube: **${title}**`,
       'info',
     );
 
-    // Implementasi integrasi YouTube Data API v3 akan diletakkan di sini.
     await logToDiscord(
       `🎊 Video berhasil diunggah ke YouTube! Link: https://youtube.com/watch?v=placeholder`,
       'success',
     );
-    res.json({
+    return c.json({
       status: 'success',
       youtubeUrl: 'https://youtube.com/watch?v=placeholder',
     });
@@ -149,7 +143,7 @@ const uploadYoutubePlaceholder = async (req, res) => {
       `❌ Gagal mengunggah ke YouTube: ${error.message}`,
       'error',
     );
-    res.status(500).json({ status: 'error', message: error.message });
+    return c.json({ status: 'error', message: error.message }, 500);
   }
 };
 
